@@ -6,3 +6,8 @@ spring:
   cloud:
     nacos:
       server-addr: localhost:8848
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql.sqlpub.com:3306/mysqlnene
+    username: neneneru
+    password: 8329a4fa1f76e1f1
