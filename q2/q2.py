@@ -7,14 +7,11 @@ from bs4 import BeautifulSoup
 import networkx as nx
 import matplotlib.pyplot as plt
 
-# ROOT_URLS = [
-#     "https://www.tongji.edu.cn",
-#     "https://www.pku.edu.cn",
-#     "https://www.sina.com.cn",
-#     "https://www.mit.edu",
-# ]
 ROOT_URLS = [
     "https://www.tongji.edu.cn",
+    "https://www.pku.edu.cn",
+    "https://www.sina.com.cn",
+    "https://www.mit.edu",
 ]
 MAX_DEPTH = 3
 SELECT_NUM = 6
@@ -23,9 +20,15 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0"
 }
 G = nx.DiGraph()
+VISITED = set()
+START = time.time()
+END = time.time()
 
 
 async def fetch(session: aiohttp.ClientSession, url, timeout=10):
+    """
+    爬虫
+    """
     # 这边设置了10s的超时时间
     async with async_timeout.timeout(timeout):
         async with session.get(url, headers=HEADERS) as response:
@@ -72,7 +75,77 @@ def check_ban_url(url):
     return True
 
 
+async def start():
+    """
+    协程启动函数
+    """
+    global START
+    print("Please select a root url to start:")
+    for i, root in enumerate(ROOT_URLS):
+        print(f"{i}. {root}")
+
+    while True:
+        try:
+            index = int(input("Enter the number of the url: "))
+            if 0 <= index < len(ROOT_URLS):
+                selected_url = ROOT_URLS[index]
+                print(f"You selected: {selected_url}")
+                break
+            else:
+                print("Invalid number, please try again.")
+        except ValueError:
+            print("Invalid input, please enter a number.")
+    asyncio.create_task(worker(selected_url, 0))
+    START = time.time()
+    # 等待所有任务完成
+    while True:
+        if len(asyncio.all_tasks()) == 1:  # 只剩下当前任务
+            break
+        await asyncio.sleep(1)  # 等待一段时间后再检查
+
+
+async def worker(url, depth):
+    """
+    递归工作函数
+    """
+    if url in VISITED or depth > MAX_DEPTH:
+        print(f"[feature] {url} has been visited or out of max depth, skip")
+        return
+    VISITED.add(url)
+    try:
+        async with aiohttp.ClientSession() as session:
+            html = await fetch(session, url)
+            # 解析html
+            soup = BeautifulSoup(html, "html.parser")
+            # 从BeautifulSoup对象soup中提取出所有满足特定条件的链接。
+            link_findings = soup.find_all("a")
+            if len(link_findings) == 0:
+                print(
+                    f"\033[93m[Warning]\033[0m With URL {url}: no links found, Maybe the site has special treatment"
+                )
+            links = [
+                link.get("href")
+                for link in link_findings
+                if link.get("href")
+                and link.get("href").startswith("http")
+                and check_url(url, link.get("href"))
+                and check_download_url(link.get("href"))
+                and check_ban_url(link.get("href"))
+            ]
+            for link in links[:SELECT_NUM]:
+                link = link.replace("\r", "")  # 删除字符'\r'（ASCII 13）
+                G.add_edge(url, link)
+                print(f"\033[96m[info]\033[0m Add edge {url} -> {link}")
+                asyncio.create_task(worker(link, depth + 1))
+    except Exception as e:
+        print(f"\033[95m[err]\033[0m With URL {url}: {e.__class__.__name__}, {e}")
+        return
+
+
 async def main():
+    """
+    非协程代码（弃用），我tm越看越傻逼，在协程里写队列进行循环这不是失去了协程的意义？我刚写这代码的时候脑子呢？？？应该递归添加task到协程循环里才对
+    """
     visited = set()
     queue = asyncio.Queue()
     for url in ROOT_URLS:
@@ -97,7 +170,8 @@ async def main():
                     continue
                 visited.add(url)
                 try:
-                    html = await fetch(session, url)
+                    htmls = await asyncio.gather(fetch(session, url))
+                    html = htmls[0]
                     # 解析html
                     soup = BeautifulSoup(html, "html.parser")
                     # 从BeautifulSoup对象soup中提取出所有满足特定条件的链接。
@@ -138,6 +212,9 @@ async def main():
 
 
 def draw_graph():
+    """
+    画图
+    """
     print(f"Number of nodes: {G.number_of_nodes()}")
     print(f"Number of edges: {G.number_of_edges()}")
     in_degrees = dict(G.in_degree())
@@ -152,7 +229,14 @@ def draw_graph():
     plt.show()
 
 
-print("\n")
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
-draw_graph()
+if __name__ == "__main__":
+    print("\n")
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(start())
+    END = time.time()
+    print(
+        "\n\n------------------------------------------------------------------------\n"
+    )
+    print(f"Total time: {END - START} seconds")
+    draw_graph()
+    print("\n")
