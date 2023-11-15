@@ -3,6 +3,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "client.Main"
+        },
+        {
+            "type": "java",
             "name": "GatewayApplication",
             "request": "launch",
             "mainClass": "gateway.geteway.GatewayApplication"

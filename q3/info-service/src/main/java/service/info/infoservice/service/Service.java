@@ -2,11 +2,13 @@ package service.info.infoservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import service.info.infoservice.pojo.Data;
 import service.info.infoservice.pojo.Info;
 import service.info.infoservice.repository.DataRepository;
 import service.info.infoservice.repository.InfoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -49,6 +51,10 @@ public class Service {
     // 查询Info
     public Optional<Info> findInfo(String id) {
         return infoRepository.findById(id);
+    }
+
+    public List<Data> getDataInfos(String uuid) {
+        return dataRepository.findByFileid(uuid);
     }
 
     // 其他方法...

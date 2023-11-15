@@ -11,4 +11,8 @@ public class Data {
     private String sign;
     private int size;
     private String fileid;
+
+    public String getID() {
+        return id;
+    }
 }

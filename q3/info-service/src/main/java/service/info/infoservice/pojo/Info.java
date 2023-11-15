@@ -23,4 +23,8 @@ public class Info {
         this.size = size;
         this.state = state;
     }
+
+    public int getState() {
+        return state;
+    }
 }

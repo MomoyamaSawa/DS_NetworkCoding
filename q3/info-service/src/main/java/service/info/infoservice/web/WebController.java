@@ -1,10 +1,14 @@
 package service.info.infoservice.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import service.info.infoservice.service.Service;
+import service.info.infoservice.pojo.Data;
 import service.info.infoservice.pojo.Info;
 
 @RestController
@@ -20,6 +25,9 @@ public class WebController {
 
     @Autowired
     private Service service;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @GetMapping("/hello")
     public String hello() {
@@ -52,4 +60,49 @@ public class WebController {
         // 返回一个包含自定义状态码和响应体的ResponseEntity
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
+
+    @GetMapping("/check")
+    public List<String> getDataserviceInstances() {
+        return discoveryClient.getInstances("dataservice").stream()
+                .map(instance -> instance.getHost() + ":" + instance.getPort())
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/info")
+    public List<Data> getDataInfos(@RequestParam String uuid) {
+        return service.getDataInfos(uuid);
+    }
+
+    @GetMapping("/delete")
+    public boolean delete(@RequestParam String uuid) {
+        List<Data> dataInfos = service.getDataInfos(uuid);
+        for (Data dataInfo : dataInfos) {
+            service.deleteData(dataInfo.getID());
+        }
+        service.deleteInfo(uuid);
+        return true;
+    }
+
+    @GetMapping("/download")
+    public List<Data> download(@RequestParam String uuid) {
+        Optional<Info> infoOptional = service.findInfo(uuid);
+        if (!infoOptional.isPresent()) {
+            return null;
+        }
+        Info info = infoOptional.get();
+        // TODO 没写检查状态码的代码
+        return service.getDataInfos(uuid);
+    }
+
+    @GetMapping("/upcheck")
+    public Info upcheck(@RequestParam String uuid) {
+        // TODO 没检查hash之类的
+        Optional<Info> infoOptional = service.findInfo(uuid);
+        if (!infoOptional.isPresent()) {
+            return null;
+        }
+        Info info = infoOptional.get();
+        return info;
+    }
+
 }
