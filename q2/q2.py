@@ -16,6 +16,7 @@ ROOT_URLS = [
 MAX_DEPTH = 3
 SELECT_NUM = 6
 MAX_ADDRESS_SIMILARITY = 2
+# 请求头
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0"
 }
@@ -83,6 +84,7 @@ async def start():
     print("Please select a root url to start:")
     for i, root in enumerate(ROOT_URLS):
         print(f"{i}. {root}")
+    print(f"{len(ROOT_URLS)}, all thoes urls")
 
     while True:
         try:
@@ -91,13 +93,21 @@ async def start():
                 selected_url = ROOT_URLS[index]
                 print(f"You selected: {selected_url}")
                 break
+            elif index == len(ROOT_URLS):
+                selected_url = ROOT_URLS
+                print(f"You selected: {selected_url}")
+                break
             else:
                 print("Invalid number, please try again.")
         except ValueError:
             print("Invalid input, please enter a number.")
-    asyncio.create_task(worker(selected_url, 0))
+    if isinstance(selected_url, list):
+        for url in selected_url:
+            asyncio.create_task(worker(url, 0))
+    else:
+        asyncio.create_task(worker(selected_url, 0))
     START = time.time()
-    # 等待所有任务完成
+    # 等待其他所有任务完成
     while True:
         if len(asyncio.all_tasks()) == 1:  # 只剩下当前任务
             break
@@ -144,7 +154,7 @@ async def worker(url, depth):
 
 async def main():
     """
-    非协程代码（弃用），我tm越看越傻逼，在协程里写队列进行循环这不是失去了协程的意义？我刚写这代码的时候脑子呢？？？应该递归添加task到协程循环里才对
+    非协程入口代码（弃用），我tm越看越傻逼，在协程里写队列进行循环这不是失去了协程的意义？我刚写这代码的时候脑子呢？？？应该递归添加task到协程循环里才对
     """
     visited = set()
     queue = asyncio.Queue()
@@ -222,10 +232,18 @@ def draw_graph():
     max_in_degree_nodes = [
         node for node, in_degree in in_degrees.items() if in_degree == max_in_degree
     ]
-    print("\n")
     for node in max_in_degree_nodes:
         print(f"Node with maximum in-degree: {node} with in-degree {max_in_degree}")
-    nx.draw(G, with_labels=True)
+
+    # 创建一个布局
+    pos = nx.spring_layout(G)
+
+    # 绘制节点
+    nx.draw_networkx_nodes(G, pos, node_size=10)
+
+    # 绘制边
+    nx.draw_networkx_edges(G, pos, alpha=0.4)
+
     plt.show()
 
 
