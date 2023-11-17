@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,9 @@ public class WebController {
         return "Hello, World!";
     }
 
+    @Autowired
+    private SendMsg sendMsg;
+
     @PostMapping("/up")
     public boolean up(@RequestParam String filename, @RequestParam String uuid, @RequestParam int index,
             @RequestBody byte[] data) {
@@ -33,7 +37,6 @@ public class WebController {
             String dir = serviceName + String.valueOf(port);
             // 创建目录路径
             Path dirPath = Paths.get(dir, uuid);
-            System.out.println("Current working directory: " + System.getProperty("user.dir"));
 
             // 如果目录不存在，创建它
             if (!Files.exists(dirPath)) {
@@ -49,7 +52,8 @@ public class WebController {
             // 写入文件
             Files.write(filePath, data);
 
-            // TODO 这边要告知info微服务
+            // 这边告知info微服务
+            sendMsg.send(new Msg(index, uuid));
 
             return true;
         } catch (Exception e) {
@@ -65,7 +69,6 @@ public class WebController {
             String dir = serviceName + String.valueOf(port);
             // 创建文件路径
             Path filePath = Paths.get(dir, uuid, String.valueOf(index));
-            System.out.println("Current working directory: " + System.getProperty("user.dir"));
 
             // 获取并打印绝对路径
             System.out.println("Absolute path: " + filePath.toAbsolutePath().toString());

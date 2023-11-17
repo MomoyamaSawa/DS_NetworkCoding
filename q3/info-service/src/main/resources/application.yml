@@ -13,6 +13,7 @@ spring:
     password: 8329a4fa1f76e1f1
   rabbitmq:
     host: 127.0.0.1
-    port: 15672 # 端口
+    port: 5672 # 端口
+    virtual-host: / # 虚拟主机
     username: guest # 用户名
     password: guest # 密码
