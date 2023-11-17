@@ -20,7 +20,7 @@ public class Service {
 
     // 检查文件名字是否存在
     public boolean checkFileName(String fileName) {
-        return infoRepository.existsByFileName(fileName);
+        return infoRepository.existsByFilename(fileName);
     }
 
     // 添加Data

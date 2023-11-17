@@ -1,0 +1,36 @@
+2023-11-13 20:52:48,073 INFO Initializes the Raft protocol, raft-config info : {}
+
+2023-11-13 20:52:48,517 INFO ========= The raft protocol is starting... =========
+
+2023-11-13 20:52:48,584 INFO ========= The raft protocol start finished... =========
+
+2023-11-13 20:52:48,842 INFO create raft group : naming_persistent_service_v2
+
+2023-11-13 20:52:50,124 INFO create raft group : naming_instance_metadata
+
+2023-11-13 20:52:50,161 INFO This Raft event changes : RaftEvent{groupId='naming_persistent_service_v2', leader='172.19.160.1:7848', term=1, raftClusterInfo=[172.19.160.1:7848]}
+
+2023-11-13 20:52:50,547 INFO This Raft event changes : RaftEvent{groupId='naming_instance_metadata', leader='172.19.160.1:7848', term=1, raftClusterInfo=[172.19.160.1:7848]}
+
+2023-11-13 20:52:50,552 INFO create raft group : naming_service_metadata
+
+2023-11-13 20:52:51,348 INFO This Raft event changes : RaftEvent{groupId='naming_service_metadata', leader='172.19.160.1:7848', term=1, raftClusterInfo=[172.19.160.1:7848]}
+
+2023-11-13 21:16:28,849 INFO Initializes the Raft protocol, raft-config info : {}
+
+2023-11-13 21:16:29,081 INFO ========= The raft protocol is starting... =========
+
+2023-11-13 21:16:29,113 INFO ========= The raft protocol start finished... =========
+
+2023-11-13 21:16:29,129 INFO create raft group : naming_persistent_service_v2
+
+2023-11-13 21:16:29,973 INFO create raft group : naming_instance_metadata
+
+2023-11-13 21:16:30,031 INFO This Raft event changes : RaftEvent{groupId='naming_persistent_service_v2', leader='172.19.160.1:7848', term=2, raftClusterInfo=[172.19.160.1:7848]}
+
+2023-11-13 21:16:30,436 INFO create raft group : naming_service_metadata
+
+2023-11-13 21:16:30,436 INFO This Raft event changes : RaftEvent{groupId='naming_instance_metadata', leader='172.19.160.1:7848', term=2, raftClusterInfo=[172.19.160.1:7848]}
+
+2023-11-13 21:16:30,734 INFO This Raft event changes : RaftEvent{groupId='naming_service_metadata', leader='172.19.160.1:7848', term=2, raftClusterInfo=[172.19.160.1:7848]}
+

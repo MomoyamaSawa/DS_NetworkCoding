@@ -6,3 +6,8 @@ spring:
   cloud:
     nacos:
       server-addr: localhost:8848
+  rabbitmq:
+    host: 127.0.0.1
+    port: 15672 # 端口
+    username: guest # 用户名
+    password: guest # 密码

@@ -63,7 +63,7 @@ public class WebController {
 
     @GetMapping("/check")
     public List<String> getDataserviceInstances() {
-        return discoveryClient.getInstances("dataservice").stream()
+        return discoveryClient.getInstances("dataService").stream()
                 .map(instance -> instance.getHost() + ":" + instance.getPort())
                 .collect(Collectors.toList());
     }

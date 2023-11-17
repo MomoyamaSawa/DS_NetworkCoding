@@ -1,0 +1,2 @@
+2023-11-13 22:24:25,402 INFO [PUSH-SUCC] 35ms, all delay time 739ms for subscriber 172.19.160.1, Service{namespace='public', group='DEFAULT_GROUP', name='dataService', ephemeral=true, revision=1}, originalSize=1, DataSize=1
+

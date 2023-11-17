@@ -11,3 +11,8 @@ spring:
     url: jdbc:mysql://mysql.sqlpub.com:3306/mysqlnene
     username: neneneru
     password: 8329a4fa1f76e1f1
+  rabbitmq:
+    host: 127.0.0.1
+    port: 15672 # 端口
+    username: guest # 用户名
+    password: guest # 密码

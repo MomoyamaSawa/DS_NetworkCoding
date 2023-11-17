@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,23 +18,30 @@ public class WebController {
 
     @Value("${spring.application.name}")
     private String serviceName;
+    @Value("${server.port}")
+    private int port;
 
     @GetMapping("/hello")
     public String hello() {
         return "Hello, World!";
     }
 
-    @GetMapping("/up")
+    @PostMapping("/up")
     public boolean up(@RequestParam String filename, @RequestParam String uuid, @RequestParam int index,
-            @RequestParam byte[] data) {
+            @RequestBody byte[] data) {
         try {
+            String dir = serviceName + String.valueOf(port);
             // 创建目录路径
-            Path dirPath = Paths.get(serviceName, uuid);
+            Path dirPath = Paths.get(dir, uuid);
+            System.out.println("Current working directory: " + System.getProperty("user.dir"));
 
             // 如果目录不存在，创建它
             if (!Files.exists(dirPath)) {
                 Files.createDirectories(dirPath);
             }
+
+            // 输出绝对路径
+            System.out.println("Directory absolute path: " + dirPath.toAbsolutePath().toString());
 
             // 创建文件路径
             Path filePath = dirPath.resolve(String.valueOf(index));
@@ -53,8 +62,13 @@ public class WebController {
     @GetMapping("/down")
     public byte[] down(@RequestParam String uuid, @RequestParam int index) {
         try {
+            String dir = serviceName + String.valueOf(port);
             // 创建文件路径
-            Path filePath = Paths.get(serviceName, uuid, String.valueOf(index));
+            Path filePath = Paths.get(dir, uuid, String.valueOf(index));
+            System.out.println("Current working directory: " + System.getProperty("user.dir"));
+
+            // 获取并打印绝对路径
+            System.out.println("Absolute path: " + filePath.toAbsolutePath().toString());
 
             // 读取文件
             return Files.readAllBytes(filePath);
