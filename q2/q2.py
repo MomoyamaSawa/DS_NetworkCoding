@@ -84,7 +84,7 @@ async def start():
     print("Please select a root url to start:")
     for i, root in enumerate(ROOT_URLS):
         print(f"{i}. {root}")
-    print(f"{len(ROOT_URLS)}, all thoes urls")
+    print(f"{len(ROOT_URLS)}. all thoes urls")
 
     while True:
         try:

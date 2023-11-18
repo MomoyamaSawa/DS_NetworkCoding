@@ -54,4 +54,8 @@ public class Info {
     public int getState() {
         return state;
     }
+
+    public void incrementNum() {
+        this.state += 1;
+    }
 }

@@ -57,5 +57,21 @@ public class Service {
         return dataRepository.findByFileid(uuid);
     }
 
+    public boolean incrementNum(String id) {
+        // 从数据库中获取Info实例
+        Optional<Info> option = infoRepository.findById(id);
+        Info info = null;
+        if (option.isPresent()) {
+            info = option.get();
+            // 增加num的值
+            info.incrementNum();
+            // 保存Info实例
+            infoRepository.save(info);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // 其他方法...
 }

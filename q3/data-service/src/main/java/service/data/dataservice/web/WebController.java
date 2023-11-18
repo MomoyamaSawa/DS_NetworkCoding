@@ -53,7 +53,7 @@ public class WebController {
             Files.write(filePath, data);
 
             // 这边告知info微服务
-            sendMsg.send(new Msg(index, uuid));
+            sendMsg.send(new Msg(index, uuid, data.length));
 
             return true;
         } catch (Exception e) {
