@@ -23,6 +23,7 @@ int main()
     */
     std::mt19937 gen(SEED);
     std::vector<std::pair<double, double>> data;
+    std::vector<std::pair<double, double>> group1, group2, group3;
     // uint8_t是一字节整数，范围是0~255
     std::vector<uint8_t> byteData;
 
@@ -33,7 +34,14 @@ int main()
     {
         d1 = generateRandomDouble(0.0, 1.0, gen);
         d2 = generateRandomDouble(0.0, 1.0, gen);
-        data.push_back(std::make_pair(d1, d2));
+        auto pair = std::make_pair(d1, d2);
+        data.push_back(pair);
+        if (pair.first < 0.46 && pair.second < 0.46)
+            group1.push_back(pair);
+        else if (pair.first > 0.72 && pair.second > 0.72)
+            group3.push_back(pair);
+        else
+            group2.push_back(pair);
 
         // reinterpret_cast是强制类型转换
         uint8_t *pD1 = reinterpret_cast<uint8_t *>(&d1);
@@ -45,17 +53,6 @@ int main()
             break;
     }
 
-    std::vector<std::pair<double, double>> group1, group2, group3;
-    for (const auto &pair : data)
-    {
-        if (pair.first < 0.46 && pair.second < 0.46)
-            group1.push_back(pair);
-        else if (pair.first > 0.72 && pair.second > 0.72)
-            group3.push_back(pair);
-        else
-            group2.push_back(pair);
-    }
-
     std::ofstream file(FILENAME, std::ios::binary);
     if (!file.is_open())
     {
@@ -63,10 +60,10 @@ int main()
         return 1;
     }
 
-    uint32_t totalPairs = data.size();
     uint32_t group1Pairs = group1.size();
     uint32_t group2Pairs = group2.size();
     uint32_t group3Pairs = group3.size();
+    uint32_t totalPairs = group1Pairs + group2Pairs + group3Pairs;
 
     // 这边把那个图片上的空的位置也预留了出来，所以文件头是 8*4 = 32 个字节
     uint32_t group1StartPos = sizeof(uint32_t) * 8;
@@ -81,7 +78,9 @@ int main()
     file.write(reinterpret_cast<char *>(&group3Pairs), sizeof(group3Pairs));
     file.write(reinterpret_cast<char *>(&group3StartPos), sizeof(group3StartPos));
 
-    file.write(reinterpret_cast<char *>(byteData.data()), byteData.size());
+    file.write(reinterpret_cast<char *>(group1.data()), group1.size());
+    file.write(reinterpret_cast<char *>(group2.data()), group2.size());
+    file.write(reinterpret_cast<char *>(group3.data()), group3.size());
 
     file.close();
 
