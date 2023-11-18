@@ -77,7 +77,7 @@ public class WebController {
     public boolean delete(@RequestParam String uuid) {
         List<Data> dataInfos = service.getDataInfos(uuid);
         for (Data dataInfo : dataInfos) {
-            service.deleteData(dataInfo.getID());
+            service.deleteData(dataInfo.getId());
         }
         service.deleteInfo(uuid);
         return true;

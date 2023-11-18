@@ -25,7 +25,23 @@ public class Data {
         this.fileid = fileid;
     }
 
-    public String getID() {
+    public String getId() {
         return id;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public String getFileid() {
+        return fileid;
     }
 }
