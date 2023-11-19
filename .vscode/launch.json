@@ -5,70 +5,62 @@
             "type": "java",
             "name": "Main",
             "request": "launch",
-            "mainClass": "client.Main"
+            "mainClass": "test.client.Main"
         },
         {
             "type": "java",
-            "name": "GatewayApplication",
+            "name": "DATA-0",
+            "request": "launch",
+            "mainClass": "service.data.dataservice.DataServiceApplication",
+            "projectName": "data-service",
+            "cwd": "${workspaceFolder}/q3/data-service",
+            "env": {
+                "server.port": "8082"
+            }
+        },
+        {
+            "type": "java",
+            "name": "DATA-1",
+            "request": "launch",
+            "mainClass": "service.data.dataservice.DataServiceApplication",
+            "projectName": "data-service",
+            "cwd": "${workspaceFolder}/q3/data-service",
+            "env": {
+                "server.port": "8083"
+            }
+        },
+        {
+            "type": "java",
+            "name": "DATA-2",
+            "request": "launch",
+            "mainClass": "service.data.dataservice.DataServiceApplication",
+            "projectName": "data-service",
+            "cwd": "${workspaceFolder}/q3/data-service",
+            "env": {
+                "server.port": "8084"
+            }
+        },
+        {
+            "type": "java",
+            "name": "INFO-0",
+            "request": "launch",
+            "mainClass": "service.info.infoservice.InfoServiceApplication",
+            "projectName": "info-service",
+            "cwd": "${workspaceFolder}/q3/info-service"
+        },
+        {
+            "type": "java",
+            "name": "Gateway",
             "request": "launch",
             "mainClass": "gateway.geteway.GatewayApplication"
         },
         {
-            "type": "java",
-            "name": "DataServiceApplication",
-            "request": "launch",
-            "mainClass": "service.data.dataservice.DataServiceApplication",
-            "projectName": "data-service",
-            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8141 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=data-service"
-        },
-        {
-            "name": "Python: 当前文件",
+            "name": "Python",
             "type": "python",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-InfoServiceApplication<info-service>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "service.info.infoservice.InfoServiceApplication",
-            "projectName": "info-service",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env",
-            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8217 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=info-service"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-DataServiceApplication<dataservice>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "service.data.dataservice.DataServiceApplication",
-            "projectName": "dataservice",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-InfoServiceApplication<infoservice>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "service.info.infoservice.InfoServiceApplication",
-            "projectName": "infoservice",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-GatewayApplication<gateway>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "gateway.geteway.GatewayApplication",
-            "projectName": "gateway",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

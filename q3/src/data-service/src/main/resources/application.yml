@@ -1,0 +1,14 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: dataService
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672 # 端口
+    virtual-host: / # 虚拟主机
+    username: guest # 用户名
+    password: guest # 密码

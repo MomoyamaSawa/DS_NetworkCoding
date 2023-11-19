@@ -1,1 +1,0 @@
-rabbitMQ版本：rabbitmq-server-3.12.8
