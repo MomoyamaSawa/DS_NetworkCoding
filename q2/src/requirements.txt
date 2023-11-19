@@ -1,0 +1,5 @@
+networkx==3.2.1
+matplotlib==3.8.2
+multidict==6.0.4
+attrs==23.1.0
+idna==3.4
