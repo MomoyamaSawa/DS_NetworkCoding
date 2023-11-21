@@ -13,7 +13,7 @@
             "request": "launch",
             "mainClass": "service.data.dataservice.DataServiceApplication",
             "projectName": "data-service",
-            "cwd": "${workspaceFolder}/q3/data-service",
+            "cwd": "${workspaceFolder}/q3/src/data-service",
             "env": {
                 "server.port": "8082"
             }
@@ -24,7 +24,7 @@
             "request": "launch",
             "mainClass": "service.data.dataservice.DataServiceApplication",
             "projectName": "data-service",
-            "cwd": "${workspaceFolder}/q3/data-service",
+            "cwd": "${workspaceFolder}/q3/src/data-service",
             "env": {
                 "server.port": "8083"
             }
@@ -35,7 +35,7 @@
             "request": "launch",
             "mainClass": "service.data.dataservice.DataServiceApplication",
             "projectName": "data-service",
-            "cwd": "${workspaceFolder}/q3/data-service",
+            "cwd": "${workspaceFolder}/q3/src/data-service",
             "env": {
                 "server.port": "8084"
             }
@@ -46,7 +46,7 @@
             "request": "launch",
             "mainClass": "service.info.infoservice.InfoServiceApplication",
             "projectName": "info-service",
-            "cwd": "${workspaceFolder}/q3/info-service"
+            "cwd": "${workspaceFolder}/q3/src/info-service"
         },
         {
             "type": "java",
