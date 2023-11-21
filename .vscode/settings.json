@@ -55,5 +55,7 @@
     },
     "java.compile.nullAnalysis.mode": "automatic",
     "java.configuration.updateBuildConfiguration": "interactive",
-    "java.project.sourcePaths": []
+    "java.project.sourcePaths": [],
+    "java.dependency.packagePresentation": "hierarchical",
+    "maven.view": "flat"
 }
